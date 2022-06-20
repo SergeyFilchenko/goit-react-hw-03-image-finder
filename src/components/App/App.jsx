@@ -98,7 +98,7 @@ class App extends Component {
           <ImageGallery handleTogleModal={handleTogleModal} images={images} />
         )}
         {isPending && <MutatingDots ariaLabel="loading" />}
-        {images.length >= 12 && <Button handleLoadMore={handleLoadMore} />}
+        {images.length <= 12 && <Button handleLoadMore={handleLoadMore} />}
         {isModalOpen && (
           <Modal
             modalImg={modalImg}
