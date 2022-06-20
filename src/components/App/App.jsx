@@ -5,11 +5,11 @@ import 'react-toastify/dist/ReactToastify.css';
 import { MutatingDots } from 'react-loader-spinner';
 import 'react-loader-spinner/dist/loader/css/react-spinner-loader.css';
 
-import Searchbar from './components/Searchbar';
-import ImageGallery from './components/ImageGallery';
-import Button from './components/Button';
-import Modal from './components/Modal';
-import fetchImages from './components/Services/api';
+import Searchbar from '../Searchbar';
+import ImageGallery from '../ImageGallery';
+import Button from '../Button';
+import Modal from '../Modal';
+import fetchImages from '../../Services/api';
 
 class App extends Component {
   state = {
