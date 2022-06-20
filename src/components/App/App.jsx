@@ -20,29 +20,28 @@ class App extends Component {
     isModalOpen: false,
     modalImg: '',
     modalAlt: '',
-    isEnding: false,
+    isLoading: false,
+    totalHits: null,
   };
 
   componentDidUpdate() {
     const { query, page, isPending } = this.state;
     if (isPending) {
       fetchImages(query, page)
-        .then(img => {
-          if (img.length === 0) {
+        .then(data => {
+          if (data.hits.length === 0) {
             return (
-              this.setState({ isPending: false, isEnding: true }),
+              this.setState({ isPending: false }),
               toast(
                 `Ypss!!! No results were found for "${query}", please edit your query.`,
-                {
-                  position: 'top-center',
-                  hideProgressBar: true,
-                }
+                { position: 'top-center', hideProgressBar: true }
               )
             );
           }
           this.setState(prev => ({
-            images: page > 1 ? [...prev.images, ...img] : img,
+            images: page > 1 ? [...prev.images, ...data.hits] : data.hits,
             isPending: false,
+            totalHits: data.totalHits,
           }));
         })
         .catch(error => {
@@ -86,8 +85,11 @@ class App extends Component {
       isModalOpen,
       modalImg,
       modalAlt,
-      isEnding,
+      // isEnding,
+      page,
+      totalHits,
     } = this.state;
+    const totalPage = totalHits / 12;
     const {
       handleSetQuery,
       handleSubmitForm,
@@ -106,8 +108,9 @@ class App extends Component {
           <ImageGallery handleTogleModal={handleTogleModal} images={images} />
         )}
         {isPending && <MutatingDots ariaLabel="loading" />}
-        {images.length >= 1 && !isEnding && (
+        {images.length >= 1 && totalPage > page && (
           <Button handleLoadMore={handleLoadMore} />
+        )}
         )}
         {isModalOpen && (
           <Modal
