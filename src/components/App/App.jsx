@@ -20,33 +20,7 @@ class App extends Component {
     isModalOpen: false,
     modalImg: '',
     modalAlt: '',
-  };
-
-  handleSetQuery = ({ target: { name, value } }) => {
-    this.setState({ [name]: value.toLowerCase() });
-  };
-
-  handleSubmitForm = e => {
-    e.preventDefault();
-    if (this.state.query.trim() === '') {
-      return toast('enter your request please!', {
-        position: 'top-center',
-        hideProgressBar: true,
-      });
-    }
-    this.setState({ page: 1, isPending: true });
-  };
-
-  handleTogleModal = (image, alt) => {
-    this.setState(prev => ({
-      isModalOpen: !prev.isModalOpen,
-      modalImg: image,
-      modalAlt: alt,
-    }));
-  };
-
-  handleLoadMore = () => {
-    this.setState(prev => ({ page: prev.page + 1, isPending: true }));
+    isLoading: false,
   };
 
   componentDidUpdate() {
@@ -76,6 +50,33 @@ class App extends Component {
         });
     }
   }
+
+  handleSetQuery = ({ target: { name, value } }) => {
+    this.setState({ [name]: value.toLowerCase() });
+  };
+
+  handleSubmitForm = e => {
+    e.preventDefault();
+    if (this.state.query.trim() === '') {
+      return toast('enter your request please!', {
+        position: 'top-center',
+        hideProgressBar: true,
+      });
+    }
+    this.setState({ page: 1, isPending: true });
+  };
+
+  handleTogleModal = (image, alt) => {
+    this.setState(prev => ({
+      isModalOpen: !prev.isModalOpen,
+      modalImg: image,
+      modalAlt: alt,
+    }));
+  };
+
+  handleLoadMore = () => {
+    this.setState(prev => ({ page: prev.page + 1, isPending: true }));
+  };
 
   render() {
     const { query, images, isPending, isModalOpen, modalImg, modalAlt } =
