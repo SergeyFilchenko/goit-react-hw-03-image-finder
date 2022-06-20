@@ -20,7 +20,7 @@ class App extends Component {
     isModalOpen: false,
     modalImg: '',
     modalAlt: '',
-    isLoading: false,
+    isEnding: false,
   };
 
   componentDidUpdate() {
@@ -30,7 +30,7 @@ class App extends Component {
         .then(img => {
           if (img.length === 0) {
             return (
-              this.setState({ isPending: false }),
+              this.setState({ isPending: false, isEnding: true }),
               toast(
                 `Ypss!!! No results were found for "${query}", please edit your query.`,
                 {
@@ -79,8 +79,15 @@ class App extends Component {
   };
 
   render() {
-    const { query, images, isPending, isModalOpen, modalImg, modalAlt } =
-      this.state;
+    const {
+      query,
+      images,
+      isPending,
+      isModalOpen,
+      modalImg,
+      modalAlt,
+      isEnding,
+    } = this.state;
     const {
       handleSetQuery,
       handleSubmitForm,
@@ -99,7 +106,9 @@ class App extends Component {
           <ImageGallery handleTogleModal={handleTogleModal} images={images} />
         )}
         {isPending && <MutatingDots ariaLabel="loading" />}
-        {images.length <= 12 && <Button handleLoadMore={handleLoadMore} />}
+        {images.length >= 1 && !isEnding && (
+          <Button handleLoadMore={handleLoadMore} />
+        )}
         {isModalOpen && (
           <Modal
             modalImg={modalImg}
